@@ -25,6 +25,9 @@ common() {
     alias gitfiles='git ls-tree --full-tree -r HEAD'
     alias remacs='sudo -s emacs'
     alias sshpi='ssh pi@raspberrypi'
+    alias rebuild='sudo nixos-rebuild switch'
+    alias upgrade='sudo nixos-rebuild switch --upgrade'
+    alias software='remacs /etc/nixos/software.nix'
 }
 
 laptop() {
