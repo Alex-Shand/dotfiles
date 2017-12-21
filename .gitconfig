@@ -1,0 +1,10 @@
+[user]
+	name = Alex Shand
+	email = alexshand4827@gmail.com
+[core]
+	autocrlf = input
+
+[alias]
+	hist = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
+	type = cat-file -t
+	dump = cat-file -p
