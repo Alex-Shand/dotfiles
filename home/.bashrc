@@ -3,10 +3,12 @@
 
 common() {
     :
-    source ~/.git-prompt.sh
+    #source ~/.git-prompt.sh
 
     alias ls='ls --color=auto'
-    PROMPT_COMMAND='__git_ps1 "[\u@\h:\W]" "\\\$ "'
+    if [[ "$PS1" != *chrootenv* ]]; then
+        export PS1="[\u@\h:\W]\\$ "
+    fi
 
     # Typing a path will cd to that directory
     shopt -s autocd
@@ -18,7 +20,7 @@ common() {
 
     # Specific commands that don't appear in history
     export HISTIGNORE='clear:tclear'
-
+    
     # Aliases
     alias clear='clear; clear'
     alias please='sudo $(fc -ln -1)'
@@ -28,12 +30,13 @@ common() {
     alias rebuild='sudo nixos-rebuild switch'
     alias upgrade='sudo nixos-rebuild switch --upgrade'
     alias software='remacs /etc/nixos/software.nix'
+    alias prog='remacs /etc/nixos/languages.nix'
 }
 
 laptop() {
     :
     # PATH Manipulations
-    export PATH=${PATH+:$PATH:}$HOME/miniconda2/bin
+    export PATH=${PATH+:$PATH:}$HOME/.local/bin
     export PYTHONPATH=${PYTHONPATH+:$PYTHONPATH:}$HOME/Scripts/Python/lib
 
     # Aliases

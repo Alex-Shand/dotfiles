@@ -3,6 +3,7 @@
 	email = alexshand4827@gmail.com
 [core]
 	autocrlf = input
+	excludesfile = ~/.gitignore
 
 [alias]
 	hist = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
