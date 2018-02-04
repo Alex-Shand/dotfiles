@@ -31,6 +31,7 @@ common() {
     alias upgrade='sudo nixos-rebuild switch --upgrade'
     alias software='remacs /etc/nixos/software.nix'
     alias prog='remacs /etc/nixos/languages.nix'
+    alias config='remacs /etc/nixos/configuration.nix'
 }
 
 laptop() {
