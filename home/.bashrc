@@ -19,7 +19,7 @@ common() {
     export HISTCONTROL='ignorespace'
 
     # Specific commands that don't appear in history
-    export HISTIGNORE='clear:tclear'
+    export HISTIGNORE='clear:tclear:task'
     
     # Aliases
     alias clear='clear; clear'
@@ -47,6 +47,24 @@ laptop() {
     alias cdir='cd $HOME/Scripts/C'
     alias cppdir='cd $HOME/Scripts/C++'
     alias numpydir='cd $HOME/Scripts/Python/numpy'
+
+    # Functions
+    notify() {
+        "$@" && notify-send -t 0 "Command Completed: $*" || notify-send -t 0 "Command Failed: $*"
+    }
+
+    archenv() {
+        local oldwd=$(pwd)
+        cd "$HOME/Scripts/Arch_Env"
+        vagrant up --provision
+        vagrant ssh
+        read -p "Suspend VM (y/n)?" ans
+        case "$ans" in 
+            n|N ) vagrant destroy;;
+            * ) vagrant suspend;;
+        esac
+        cd $oldwd
+    }
 }
 
 desktop() {
@@ -54,11 +72,6 @@ desktop() {
     # Aliases
     alias rubydir='cd $HOME/Scripts/Ruby'
     alias railsdir='cd $HOME/Scripts/Ruby/Rails'
-}
-
-# Functions
-notify() {
-    "$@" && notify-send -t 0 "Command Completed: $*" || notify-send -t 0 "Command Failed: $*"
 }
 
 # Run common configuration
