@@ -3,9 +3,7 @@
 
 common() {
     :
-    #source ~/.git-prompt.sh
-
-    alias ls='ls --color=auto'
+    # Stops the prompt being reset inside an FHS env nix-shell
     if [[ "$PS1" != *chrootenv* ]]; then
         export PS1="[\u@\h:\W]\\$ "
     fi
@@ -22,6 +20,7 @@ common() {
     export HISTIGNORE='clear:tclear:task'
     
     # Aliases
+    alias ls='ls --color=auto'
     alias clear='clear; clear'
     alias please='sudo $(fc -ln -1)'
     alias gitfiles='git ls-tree --full-tree -r HEAD'
@@ -32,6 +31,28 @@ common() {
     alias software='remacs /etc/nixos/software.nix'
     alias prog='remacs /etc/nixos/languages.nix'
     alias config='remacs /etc/nixos/configuration.nix'
+    alias nix-shell='nix-shell --pure'
+
+    # Runs the a sage math jupyter notebook in the supplied directiory, defaults
+    # to the current directory
+    sage() {
+        # Passed directory or current directory if empty
+        local dir=${1:-$(pwd)}
+        # Run container:
+        # --rm - delete container on exit
+        # --name - set a name for the container (Used below)
+        # -v - Map the left directory from the outside to the right on the inside
+        # -w - Set the working directory
+        # -p - Map the left port on the outside to the right on the inside
+        docker run --rm --name sage -v "$dir":/notebooks -w /notebooks -p 8888:8888 sagemath/sagemath-jupyter &
+        # Wait for a key press
+        echo "Press any key to kill the container"
+        read -n 1 -s
+        echo "Exiting..."
+        # Stop the container using the name set above
+        docker stop sage 1>/dev/null 2>&1
+        echo "Done"
+    }
 }
 
 laptop() {
