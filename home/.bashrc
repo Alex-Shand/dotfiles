@@ -53,6 +53,10 @@ common() {
         docker stop sage 1>/dev/null 2>&1
         echo "Done"
     }
+
+    sshfs() {
+        nix-shell -p sshfs --run "sshfs $*"
+    }
 }
 
 laptop() {
@@ -72,19 +76,6 @@ laptop() {
     # Functions
     notify() {
         "$@" && notify-send -t 0 "Command Completed: $*" || notify-send -t 0 "Command Failed: $*"
-    }
-
-    archenv() {
-        local oldwd=$(pwd)
-        cd "$HOME/Scripts/Arch_Env"
-        vagrant up --provision
-        vagrant ssh
-        read -p "Suspend VM (y/n)?" ans
-        case "$ans" in 
-            n|N ) vagrant destroy;;
-            * ) vagrant suspend;;
-        esac
-        cd $oldwd
     }
 }
 
