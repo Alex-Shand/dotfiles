@@ -31,7 +31,7 @@ common() {
     alias software='remacs /etc/nixos/software.nix'
     alias prog='remacs /etc/nixos/languages.nix'
     alias config='remacs /etc/nixos/configuration.nix'
-    alias nix-shell='nix-shell --pure'
+    alias puresh='nix-shell --pure'
 
     # Runs the a sage math jupyter notebook in the supplied directiory, defaults
     # to the current directory
@@ -64,6 +64,7 @@ laptop() {
     # PATH Manipulations
     export PATH=${PATH+:$PATH:}$HOME/.local/bin
     export PYTHONPATH=${PYTHONPATH+:$PYTHONPATH:}$HOME/Scripts/Python/lib
+    export PERL5LIB=${PERL5LIB+:$PERL5LIB:}/perllib
 
     # Aliases
     alias tclear='clear; task list'
