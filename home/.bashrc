@@ -31,6 +31,7 @@ common() {
     alias software='remacs /etc/nixos/software.nix'
     alias prog='remacs /etc/nixos/languages.nix'
     alias config='remacs /etc/nixos/configuration.nix'
+    alias dev='nix-shell'
     alias puresh='nix-shell --pure'
 
     # Runs the a sage math jupyter notebook in the supplied directiory, defaults
