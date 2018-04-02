@@ -17,7 +17,7 @@ common() {
     export HISTCONTROL='ignorespace'
 
     # Specific commands that don't appear in history
-    export HISTIGNORE='clear:tclear:task'
+    export HISTIGNORE='clear:tclear:task:poweroff'
     
     # Aliases
     alias ls='ls --color=auto'
