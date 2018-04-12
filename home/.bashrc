@@ -74,6 +74,8 @@ laptop() {
     alias cdir='cd $HOME/Scripts/C'
     alias cppdir='cd $HOME/Scripts/C++'
     alias numpydir='cd $HOME/Scripts/Python/numpy'
+    alias ocamldir='cd $HOME/Scripts/OCaml/; nix-shell'
+    alias android-emulator='$HOME/Scripts/Android_Emulator/emulator'
 
     # Functions
     notify() {
