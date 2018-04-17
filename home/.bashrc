@@ -19,14 +19,20 @@ common() {
     # Specific commands that don't appear in history
     export HISTIGNORE='clear:tclear:task:poweroff'
     
-    # Aliases
+    ## General Aliases ##
+    # Coloured ls output
     alias ls='ls --color=auto'
+    # Properly clear the terminal
     alias clear='clear; clear'
+    # Repeat the last command with sudo
     alias please='sudo $(fc -ln -1)'
-    alias gitfiles='git ls-tree --full-tree -r HEAD'
+    # Run emacs as root
     alias remacs='sudo -s emacs'
-    alias sshpi='ssh pi@raspberrypi'
+
+    ## Nix Aliases ##
+    # Rebuild OS after changes to configuration.nix
     alias rebuild='sudo nixos-rebuild switch'
+    # Same as above, also update channel
     alias upgrade='sudo nixos-rebuild switch --upgrade'
     alias software='remacs /etc/nixos/software.nix'
     alias prog='remacs /etc/nixos/languages.nix'
@@ -34,7 +40,7 @@ common() {
     alias dev='nix-shell'
     alias puresh='nix-shell --pure'
 
-    # Runs the a sage math jupyter notebook in the supplied directiory, defaults
+    # Runs a sage math jupyter notebook in the supplied directiory, defaults
     # to the current directory
     sage() {
         # Passed directory or current directory if empty
