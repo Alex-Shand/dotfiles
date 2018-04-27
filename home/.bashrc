@@ -87,6 +87,30 @@ laptop() {
     notify() {
         "$@" && notify-send -t 0 "Command Completed: $*" || notify-send -t 0 "Command Failed: $*"
     }
+
+    ccomp() {
+        local dir=$(pwd)
+        if ! docker image list | \
+                cut -d ' ' -f 1 | \
+                grep 'local/compcert' &>/dev/null; then
+            echo "Need to compile CompCert..."
+            select resp in y n; do
+                case $resp in
+                    n) return 0;;
+                    *) break;;
+                esac
+            done
+            cd "$HOME/Scripts/OCaml/CompCert"
+            docker build -t local/compcert .
+            cd "$dir"
+        fi
+        # Run container:
+        # --rm - delete container on exit
+        # -v - Map the left directory from the outside to the right on the inside
+        # -w - Set the working directory
+        docker run --rm -v "$dir":/src -w /src local/compcert ccomp "$@"
+    }
+    alias cinterp='ccomp -interp'
 }
 
 desktop() {
