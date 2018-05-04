@@ -51,7 +51,7 @@ common() {
         # -v - Map the left directory from the outside to the right on the inside
         # -w - Set the working directory
         # -p - Map the left port on the outside to the right on the inside
-        docker run --rm --name sage -v "$dir":/notebooks -w /notebooks -p 8888:8888 sagemath/sagemath-jupyter &
+        docker run --rm --name sage -v "$dir":/notebooks -w /notebooks -p 8888:8888 sagemath/sagemath &
         # Wait for a key press
         echo "Press any key to kill the container"
         read -n 1 -s
@@ -100,7 +100,7 @@ laptop() {
                     *) break;;
                 esac
             done
-            cd "$HOME/Scripts/OCaml/CompCert"
+            cd "$HOME/Scripts/Docker/CompCert"
             docker build -t local/compcert .
             cd "$dir"
         fi
