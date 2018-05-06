@@ -70,7 +70,7 @@ laptop() {
     :
     # PATH Manipulations
     export PATH=${PATH+:$PATH:}$HOME/.local/bin
-    export PYTHONPATH=${PYTHONPATH+:$PYTHONPATH:}$HOME/Scripts/Python/lib:$HOME/Scripts/Python/test_lib
+    export PYTHONPATH=${PYTHONPATH+:$PYTHONPATH:}$HOME/Scripts/Python/test_lib:$HOME/Scripts/Python/lib
     export PERL5LIB=${PERL5LIB+:$PERL5LIB:}/perllib
 
     # Aliases
