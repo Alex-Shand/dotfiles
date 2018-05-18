@@ -61,6 +61,36 @@ common() {
         echo "Done"
     }
 
+    ocamlenv() {
+        local dir=$(pwd)
+        if [[ ! "$dir" == "$HOME" ]]; then
+            cp "$HOME/.ocaml-lib-install.sh" "$dir"
+        fi
+        chmod +x "$dir/.ocaml-lib-install.sh"
+        if  ! docker ps -a | grep ocaml &>/dev/null; then
+            printf "%s" "Creating OCaml docker container..."
+            docker create --name ocaml -it -v "$dir":/workspace -w /workspace \
+                   ocaml/opam &>/dev/null
+            echo "Done."
+        fi
+        docker start ocaml &>/dev/null
+        docker exec -it ocaml bash -c \
+               'best=$(opam switch 2>/dev/null | \
+                perl -ne "chomp; @q=split; print qq(@q[2] )" | \
+                perl -ne "$,=qq(\n); print grep {/^\d/} split" | \
+                sort -V | \
+                tail -2 | \
+                head -1) && \
+                opam switch $best && \
+                eval $(opam config env) && \
+                ./.ocaml-lib-install.sh; \
+                exec bash'
+        docker stop ocaml &>/dev/null
+        if [[ ! "$dir" == "$HOME" ]]; then
+            rm "$dir/.ocaml-lib-install.sh"
+        fi
+    }
+    
     sshfs() {
         nix-shell -p sshfs --run "sshfs $*"
     }
@@ -70,7 +100,7 @@ laptop() {
     :
     # PATH Manipulations
     export PATH=${PATH+:$PATH:}$HOME/.local/bin
-    export PYTHONPATH=${PYTHONPATH+:$PYTHONPATH:}$HOME/Scripts/Python/test_lib:$HOME/Scripts/Python/lib
+    export PYTHONPATH=${PYTHONPATH+:$PYTHONPATH:}$HOME/Scripts/Python:$HOME/Scripts/Python/lib
     export PERL5LIB=${PERL5LIB+:$PERL5LIB:}/perllib
 
     # Aliases
