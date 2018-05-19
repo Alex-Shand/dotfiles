@@ -13,8 +13,8 @@ common() {
     # Jump back one directory (Only works once)
     alias back='cd -'
 
-    # Commands prefixed with a space won't appear in history
-    export HISTCONTROL='ignorespace'
+    # Don't store duplicates or commands prefixed with a space
+    export HISTCONTROL='ignoreboth'
 
     # Specific commands that don't appear in history
     export HISTIGNORE='clear:tclear:task:poweroff'
@@ -32,7 +32,7 @@ common() {
     ## Nix Aliases ##
     # Rebuild OS after changes to configuration.nix
     alias rebuild='sudo nixos-rebuild switch'
-    # Same as above, also update channel
+    # Same as above, also update channels
     alias upgrade='sudo nixos-rebuild switch --upgrade'
     alias software='remacs /etc/nixos/software.nix'
     alias prog='remacs /etc/nixos/languages.nix'
@@ -112,10 +112,12 @@ laptop() {
     alias numpydir='cd $HOME/Scripts/Python/numpy'
     alias ocamldir='cd $HOME/Scripts/OCaml/; nix-shell'
     alias android-emulator='$HOME/Scripts/Android_Emulator/emulator'
+    alias cinterp='ccomp -interp'
 
     # Functions
     notify() {
-        "$@" && notify-send -t 0 "Command Completed: $*" || notify-send -t 0 "Command Failed: $*"
+        "$@" && notify-send -t 0 "Command Completed: $*" || \
+                notify-send -t 0 "Command Failed: $*"
     }
 
     ccomp() {
@@ -140,7 +142,6 @@ laptop() {
         # -w - Set the working directory
         docker run --rm -v "$dir":/src -w /src local/compcert ccomp "$@"
     }
-    alias cinterp='ccomp -interp'
 }
 
 desktop() {
