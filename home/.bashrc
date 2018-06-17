@@ -28,6 +28,9 @@ common() {
     alias please='sudo $(fc -ln -1)'
     # Run emacs as root
     alias remacs='sudo -s emacs'
+    # The sage jupyter kernel only seems to start when sage is run as root
+    # (TODO: This is probably really bad)
+    alias sage='sudo sage -n jupyter'
 
     ## Nix Aliases ##
     # Rebuild OS after changes to configuration.nix
@@ -40,37 +43,11 @@ common() {
     alias dev='nix-shell'
     alias puresh='nix-shell --pure'
 
-    # Runs a sage math jupyter notebook in the supplied directiory, defaults
-    # to the current directory
-    sage() {
-        # Passed directory or current directory if empty
-        local dir=${1:-$(pwd)}
-        # Run container:
-        # --rm - delete container on exit
-        # --name - set a name for the container (Used below)
-        # -v - Map the left directory from the outside to the right on the inside
-        # -w - Set the working directory
-        # -p - Map the left port on the outside to the right on the inside
-        docker run --rm --name sage -v "$dir":/notebooks -w /notebooks -p 8888:8888 sagemath/sagemath &
-        # Wait for a key press
-        echo "Press any key to kill the container"
-        read -n 1 -s
-        echo "Exiting..."
-        # Stop the container using the name set above
-        docker stop sage 1>/dev/null 2>&1
-        echo "Done"
-    }
-
     ocamlenv() {
-        local dir=$(pwd)
-        if [[ ! "$dir" == "$HOME" ]]; then
-            cp "$HOME/.ocaml-lib-install.sh" "$dir"
-        fi
-        chmod +x "$dir/.ocaml-lib-install.sh"
         if  ! docker ps -a | grep ocaml &>/dev/null; then
             printf "%s" "Creating OCaml docker container..."
-            docker create --name ocaml -it -v "$dir":/workspace -w /workspace \
-                   ocaml/opam &>/dev/null
+            docker create --name ocaml -it -v "$HOME/Scripts/OCaml":/workspace \
+                   -w /workspace ocaml/opam &>/dev/null
             echo "Done."
         fi
         docker start ocaml &>/dev/null
@@ -83,16 +60,18 @@ common() {
                 head -1) && \
                 opam switch $best && \
                 eval $(opam config env) && \
-                ./.ocaml-lib-install.sh; \
+                opam install -y ocamlfind && \
+                ocaml setup.ml; \
                 exec bash'
         docker stop ocaml &>/dev/null
-        if [[ ! "$dir" == "$HOME" ]]; then
-            rm "$dir/.ocaml-lib-install.sh"
-        fi
     }
     
     sshfs() {
         nix-shell -p sshfs --run "sshfs $*"
+    }
+
+    monodevelop() {
+        nix-shell -p monodevelop --run "monodevelop $*"
     }
 }
 
