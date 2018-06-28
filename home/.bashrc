@@ -17,17 +17,22 @@ common() {
     export HISTCONTROL='ignoreboth'
 
     # Specific commands that don't appear in history
-    export HISTIGNORE='clear:tclear:task:poweroff'
+    export HISTIGNORE='clear:tclear:task:poweroff:reboot'
     
     ## General Aliases ##
     # Coloured ls output
     alias ls='ls --color=auto'
     # Properly clear the terminal
-    alias clear='clear; clear'
+    alias clear='tput reset'
     # Repeat the last command with sudo
     alias please='sudo $(fc -ln -1)'
     # Run emacs as root
     alias remacs='sudo -s emacs'
+}
+
+# Common configuration for machines based on configuration.nix
+nix() {
+    :
     # The sage jupyter kernel only seems to start when sage is run as root
     # (TODO: This is probably really bad)
     alias sage='sudo sage -n jupyter'
@@ -130,22 +135,33 @@ desktop() {
     alias railsdir='cd $HOME/Scripts/Ruby/Rails'
 }
 
+# Centos7 virtual machine for work
+centos() {
+    :
+}
+
 # Run common configuration
 common
 
-case "$HOSTNAME" in
+case $(hostname) in
     'laptop')
         # Run laptop specific config
+        nix;
         laptop;;
     'desktop')
         # Run desktop specific config
+        nix;
         desktop;;
+    'centos')
+        centos;;
     *)
         # Unknown hostname
-        echo "No Config found for $HOSTNAME";;
+        echo "No Config found for $(hostname)";;
 esac
 
 # Remove config function definitions
 unset -f common
+unset -f nix
 unset -f laptop
 unset -f desktop
+unset -f centos
