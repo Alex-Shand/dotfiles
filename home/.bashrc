@@ -138,6 +138,15 @@ desktop() {
 # Centos7 virtual machine for work
 centos() {
     :
+    export PATH=$PATH:/usr/local/buildtools
+    export PYTHONPATH=/usr/local/buildtools
+    export BUILDCONCURRENCY=`grep -c ^processor /proc/cpuinfo`
+    export SCONSFLAGS="-j${BUILDCONCURRENCY} "
+    export LOCAL_DEPENDENCY_CACHE=/scratch/alexsh/cache
+    echo "Called";
+    if [[ "x$DEVTOOLSET" == "x" ]]; then
+        DEVTOOLSET="x" scl enable devtoolset-7 bash
+    fi
 }
 
 # Run common configuration
@@ -164,4 +173,4 @@ unset -f common
 unset -f nix
 unset -f laptop
 unset -f desktop
-unset -f centos
+unset -f centos 
