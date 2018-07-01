@@ -61,7 +61,7 @@ common() {
                 opam switch $best && \
                 eval $(opam config env) && \
                 opam install -y ocamlfind && \
-                ocaml setup.ml; \
+                ocaml util/setup.ml; \
                 exec bash'
         docker stop ocaml &>/dev/null
     }
