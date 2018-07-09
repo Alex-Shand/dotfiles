@@ -1,3 +1,4 @@
+
 # Abort if the shell is non-interactive
 [[ $- != *i* ]] && return
 
@@ -8,10 +9,25 @@ common() {
         export PS1="[\u@\h:\W]\\$ "
     fi
 
-    # Typing a path will cd to that directory
-    shopt -s autocd
-    # Jump back one directory (Only works once)
-    alias back='cd -'
+    cd() {
+        if (( $# )); then
+            pushd "$@" 2>&1 >/dev/null
+        else 
+            if [[ "$PWD" != "$HOME" ]]; then
+                pushd ~ 2>&1 >/dev/null
+            fi
+        fi
+        dirs -v
+    }
+    alias back='popd 2>&1 >/dev/null; dirs -v'
+    alias dirs='dirs -v'
+    switch() {
+        local stack=($(dirs -v))
+        if (( ${#stack[@]} >= 3 )); then
+            pushd 2>&1 >/dev/null || popd 2>&1 >/dev/null
+        fi
+        dirs -v
+    }
 
     # Don't store duplicates or commands prefixed with a space
     export HISTCONTROL='ignoreboth'
@@ -143,7 +159,8 @@ centos() {
     export BUILDCONCURRENCY=`grep -c ^processor /proc/cpuinfo`
     export SCONSFLAGS="-j${BUILDCONCURRENCY} "
     export LOCAL_DEPENDENCY_CACHE=/scratch/alexsh/cache
-    echo "Called";
+    alias emacs='_emacs'
+    export LD_LIBRARY_PATH="/usr/local/lib:$LD_LIBRARY_PATH"
     if [[ "x$DEVTOOLSET" == "x" ]]; then
         DEVTOOLSET="x" scl enable devtoolset-7 bash
     fi
