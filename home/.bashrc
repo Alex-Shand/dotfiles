@@ -49,6 +49,15 @@ common() {
 # Common configuration for machines based on configuration.nix
 nix() {
     :
+
+    command_not_found_handle() {
+        read -p "Add Task: $* [y/N]:" choice
+        case "$choice" in
+            y|Y ) task add "$@";;
+            n|N ) task add "$@";;
+        esac
+    }
+    
     # The sage jupyter kernel only seems to start when sage is run as root
     # (TODO: This is probably really bad)
     alias sage='sudo sage -n jupyter'
