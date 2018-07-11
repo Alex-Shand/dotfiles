@@ -6,7 +6,7 @@ common() {
     :
     # Stops the prompt being reset inside an FHS env nix-shell
     if [[ "$PS1" != *chrootenv* ]]; then
-        export PS1="[\u@\h:\W]\\$ "
+        export PS1="\$(dirs)\n[\u@\h:\W]\\$ "
     fi
 
     cd() {
@@ -17,16 +17,14 @@ common() {
                 pushd ~ 2>&1 >/dev/null
             fi
         fi
-        dirs -v
     }
-    alias back='popd 2>&1 >/dev/null; dirs -v'
-    alias dirs='dirs -v'
+    alias back='popd 2>&1 >/dev/null'
+    alias dir='dirs -v'
     switch() {
         local stack=($(dirs -v))
         if (( ${#stack[@]} >= 3 )); then
             pushd 2>&1 >/dev/null || popd 2>&1 >/dev/null
         fi
-        dirs -v
     }
 
     # Don't store duplicates or commands prefixed with a space
