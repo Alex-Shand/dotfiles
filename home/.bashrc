@@ -1,4 +1,3 @@
-
 # Abort if the shell is non-interactive
 [[ $- != *i* ]] && return
 
@@ -47,12 +46,11 @@ common() {
 # Common configuration for machines based on configuration.nix
 nix() {
     :
-
     command_not_found_handle() {
         read -p "Add Task: $* [y/N]:" choice
         case "$choice" in
             y|Y ) task add "$@";;
-            n|N ) task add "$@";;
+            n|N ) ;;
         esac
     }
     
