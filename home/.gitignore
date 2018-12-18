@@ -1,2 +1,5 @@
 .directory
 shell.nix
+.Docker/
+__pycache__/
+_build/

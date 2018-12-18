@@ -1,6 +1,6 @@
 [user]
 	name = Alex Shand
-	email = alexshand4827@gmail.com
+	email = alex@alexshand.com
 [core]
 	autocrlf = input
 	excludesfile = ~/.gitignore

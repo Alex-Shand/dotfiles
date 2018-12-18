@@ -21,6 +21,7 @@ common() {
     alias clear='tput reset'
     # Repeat the last command with sudo
     alias please='sudo $(fc -ln -1)'
+    alias emacs='$HOME/.emacs.d/_emacs'
     # Run emacs as root
     alias remacs='sudo -s emacs'
 }
@@ -28,10 +29,6 @@ common() {
 # Common configuration for machines based on configuration.nix
 nix() {
     :
-    # The sage jupyter kernel only seems to start when sage is run as root
-    # (TODO: This is probably really bad)
-    alias sage='sudo sage -n jupyter'
-
     ## Nix Aliases ##
     # Rebuild OS after changes to configuration.nix
     alias rebuild='sudo nixos-rebuild switch'
@@ -40,31 +37,8 @@ nix() {
     alias software='remacs /etc/nixos/software.nix'
     alias prog='remacs /etc/nixos/languages.nix'
     alias config='remacs /etc/nixos/configuration.nix'
-    alias dev='nix-shell'
-    alias puresh='nix-shell --pure'
-
-    #ocamlenv() {
-    #    if  ! docker ps -a | grep ocaml &>/dev/null; then
-    #        printf "%s" "Creating OCaml docker container..."
-    #        docker create --name ocaml -it -v "$HOME/Scripts/OCaml":/workspace \
-    #               -w /workspace ocaml/opam &>/dev/null
-    #        echo "Done."
-    #    fi
-    #    docker start ocaml &>/dev/null
-    #    docker exec -it ocaml bash -c \
-    #           'best=$(opam switch 2>/dev/null | \
-    #            perl -ne "chomp; @q=split; print qq(@q[2] )" | \
-    #            perl -ne "$,=qq(\n); print grep {/^\d/} split" | \
-    #            sort -V | \
-    #            tail -1) && \
-    #            echo $best && \
-    #            opam switch $best && \
-    #            eval $(opam config env) && \
-    #            opam install -y ocamlfind && \
-    #            ocaml util/setup.ml; \
-    #            exec bash'
-    #    docker stop ocaml &>/dev/null
-    #}
+    alias ns='nix-shell'
+    alias ps='nix-shell --pure'
     
     sshfs() {
         nix-shell -p sshfs --run "sshfs $*"
@@ -90,21 +64,6 @@ laptop() {
 desktop() {
     :
 }
-
-# Centos7 virtual machine for work
-#centos() {
-#    :
-#    export PATH=$PATH:/usr/local/buildtools
-#    export PYTHONPATH=/usr/local/buildtools
-#    export BUILDCONCURRENCY=`grep -c ^processor /proc/cpuinfo`
-#    export SCONSFLAGS="-j${BUILDCONCURRENCY} "
-#    export LOCAL_DEPENDENCY_CACHE=/scratch/alexsh/cache
-#    alias emacs='_emacs'
-#    export LD_LIBRARY_PATH="/usr/local/lib:$LD_LIBRARY_PATH"
-#    if [[ "x$DEVTOOLSET" == "x" ]]; then
-#        DEVTOOLSET="x" scl enable devtoolset-7 bash
-#    fi
-#}
 
 # Run common configuration
 common
