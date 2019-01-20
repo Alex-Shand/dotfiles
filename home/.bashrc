@@ -12,7 +12,7 @@ common() {
     export HISTCONTROL='ignoreboth'
 
     # Specific commands that don't appear in history
-    export HISTIGNORE='clear:tclear:task:poweroff:reboot'
+    export HISTIGNORE='clear:tclear:task:poweroff:reboot:hibernate:suspend'
     
     ## General Aliases ##
     # Coloured ls output
@@ -24,6 +24,8 @@ common() {
     alias emacs='$HOME/.emacs.d/_emacs'
     # Run emacs as root
     alias remacs='sudo -s emacs'
+    alias hibernate='systemctl hibernate'
+    alias suspend='systemctl suspend'
 }
 
 # Common configuration for machines based on configuration.nix
@@ -39,6 +41,7 @@ nix() {
     alias config='remacs /etc/nixos/configuration.nix'
     alias ns='nix-shell'
     alias ps='nix-shell --pure'
+    alias mypy='mypy --disallow-any-unimported --disallow-subclassing-any --disallow-any-decorated --disallow-any-generics --disallow-untyped-defs --disallow-untyped-calls --check-untyped-defs' 
     
     sshfs() {
         nix-shell -p sshfs --run "sshfs $*"
@@ -50,6 +53,7 @@ laptop() {
     # PATH Manipulations
     export PATH=${PATH+$PATH:}$HOME/.local/bin
     export PYTHONPATH=${PYTHONPATH+$PYTHONPATH:}$HOME/Scripts/Python:$HOME/Scripts/Python/lib
+    export MYPYPATH=$PYTHONPATH:$HOME/Scripts/Python/extra_mypy_stubs
 
     # Aliases
     alias tclear='clear; task list'
