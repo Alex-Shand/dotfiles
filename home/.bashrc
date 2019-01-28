@@ -41,7 +41,7 @@ nix() {
     alias config='remacs /etc/nixos/configuration.nix'
     alias ns='nix-shell'
     alias ps='nix-shell --pure'
-    alias mypy='mypy --disallow-any-unimported --disallow-subclassing-any --disallow-any-decorated --disallow-any-generics --disallow-untyped-defs --disallow-untyped-calls --check-untyped-defs' 
+    alias mypy='mypy --disallow-any-unimported --disallow-subclassing-any --disallow-any-generics --disallow-untyped-defs --disallow-untyped-calls --check-untyped-defs' 
     
     sshfs() {
         nix-shell -p sshfs --run "sshfs $*"
