@@ -26,6 +26,7 @@ common() {
     alias remacs='sudo -s emacs'
     alias hibernate='systemctl hibernate'
     alias suspend='systemctl suspend'
+    alias empty='rsync -rd --delete $(mktemp -d)/'
 }
 
 # Common configuration for machines based on configuration.nix
@@ -41,7 +42,6 @@ nix() {
     alias config='remacs /etc/nixos/configuration.nix'
     alias ns='nix-shell'
     alias ps='nix-shell --pure'
-    alias mypy='mypy --disallow-any-unimported --disallow-subclassing-any --disallow-any-generics --disallow-untyped-defs --disallow-untyped-calls --check-untyped-defs' 
     
     sshfs() {
         nix-shell -p sshfs --run "sshfs $*"
@@ -53,10 +53,11 @@ laptop() {
     # PATH Manipulations
     export PATH=${PATH+$PATH:}$HOME/.local/bin
     export PYTHONPATH=${PYTHONPATH+$PYTHONPATH:}$HOME/Scripts/Python:$HOME/Scripts/Python/lib
-    export MYPYPATH=$PYTHONPATH:$HOME/Scripts/Python/extra_mypy_stubs
+    export MYPYPATH=$PYTHONPATH
 
     # Aliases
     alias tclear='clear; task list'
+    alias mypy='mypy_wrapper'
 
     # Functions
     notify() {
