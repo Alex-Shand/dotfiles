@@ -1,6 +1,7 @@
 [user]
 	name = Alex Shand
 	email = alex@alexshand.com
+
 [core]
 	autocrlf = input
 	excludesfile = ~/.gitignore
@@ -9,5 +10,6 @@
 	hist = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
 	type = cat-file -t
 	dump = cat-file -p
+
 [http]
 	sslVerify = false

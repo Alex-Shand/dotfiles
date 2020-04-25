@@ -3,11 +3,6 @@
 
 common() {
     :
-    # Stops the prompt being reset inside an FHS env nix-shell
-    if [[ "$PS1" != *chrootenv* ]]; then
-        export PS1="[\u@\h:\W]\\$ "
-    fi
-
     # Don't store duplicates or commands prefixed with a space
     export HISTCONTROL='ignoreboth'
 
@@ -26,12 +21,18 @@ common() {
     alias remacs='sudo -s emacs'
     alias hibernate='systemctl hibernate'
     alias suspend='systemctl suspend'
+    # Empty a directory
     alias empty='rsync -rd --delete $(mktemp -d)/'
 }
 
 # Common configuration for machines based on configuration.nix
 nix() {
     :
+    # Stops the prompt being reset inside an FHS env nix-shell
+    if [[ "$PS1" != *chrootenv* ]]; then
+        export PS1="[\u@\h:\W]\\$ "
+    fi
+    
     ## Nix Aliases ##
     # Rebuild OS after changes to configuration.nix
     alias rebuild='sudo nixos-rebuild switch'
@@ -41,7 +42,6 @@ nix() {
     alias prog='remacs /etc/nixos/languages.nix'
     alias config='remacs /etc/nixos/configuration.nix'
     alias ns='nix-shell'
-    alias ps='nix-shell --pure'
     
     sshfs() {
         nix-shell -p sshfs --run "sshfs $*"
@@ -58,7 +58,7 @@ laptop() {
     # Aliases
     alias tclear='clear; task list'
     alias mypy='mypy_wrapper'
-
+ 
     # Functions
     notify() {
         "$@" && notify-send -t 0 "Command Completed: $*" || \
