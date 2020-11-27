@@ -1,5 +1,6 @@
 .directory
 shell.nix
+dshell.scm
 .Docker/
 __pycache__/
 _build/

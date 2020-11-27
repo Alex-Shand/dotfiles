@@ -46,6 +46,11 @@ nix() {
     sshfs() {
         nix-shell -p sshfs --run "sshfs $*"
     }
+    
+    docker-clean() {
+        docker rm $(docker ps -a -f status=exited -q)
+        docker image prune
+    }
 }
 
 laptop() {
