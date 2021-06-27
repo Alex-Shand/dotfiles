@@ -8,12 +8,12 @@ common() {
 
     # Specific commands that don't appear in history
     export HISTIGNORE='clear:tclear:task:poweroff:reboot:hibernate:suspend'
-    
+
     ## General Aliases ##
     # Coloured ls output
     alias ls='ls --color=auto'
     # Properly clear the terminal
-    alias clear='tput reset'
+    alias clear='tput reset && printf "\e[3J"'
     # Repeat the last command with sudo
     alias please='sudo $(fc -ln -1)'
     alias emacs='$HOME/.emacs.d/_emacs'
@@ -32,7 +32,7 @@ nix() {
     if [[ "$PS1" != *chrootenv* ]]; then
         export PS1="[\u@\h:\W]\\$ "
     fi
-    
+
     ## Nix Aliases ##
     # Rebuild OS after changes to configuration.nix
     alias rebuild='sudo nixos-rebuild switch'
@@ -42,11 +42,11 @@ nix() {
     alias prog='remacs /etc/nixos/languages.nix'
     alias config='remacs /etc/nixos/configuration.nix'
     alias ns='nix-shell'
-    
+
     sshfs() {
         nix-shell -p sshfs --run "sshfs $*"
     }
-    
+
     docker-clean() {
         docker rm $(docker ps -a -f status=exited -q)
         docker image prune
@@ -63,7 +63,7 @@ laptop() {
     # Aliases
     alias tclear='clear; task list'
     alias mypy='mypy_wrapper'
- 
+
     # Functions
     notify() {
         "$@" && notify-send -t 0 "Command Completed: $*" || \
