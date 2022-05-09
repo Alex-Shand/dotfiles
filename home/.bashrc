@@ -2,7 +2,6 @@
 [[ $- != *i* ]] && return
 
 common() {
-    :
     # Don't store duplicates or commands prefixed with a space
     export HISTCONTROL='ignoreboth'
 
@@ -27,7 +26,6 @@ common() {
 
 # Common configuration for machines based on configuration.nix
 nix() {
-    :
     # Stops the prompt being reset inside an FHS env nix-shell
     if [[ "$PS1" != *chrootenv* ]]; then
         export PS1="[\u@\h:\W]\\$ "
@@ -51,24 +49,27 @@ nix() {
         docker rm $(docker ps -a -f status=exited -q)
         docker image prune
     }
+
+    docker-image-purge() {
+        docker image rm -f $(docker image list -a -q)
+    }
 }
 
 laptop() {
-    :
-    # PATH Manipulations
     export PATH=${PATH+$PATH:}$HOME/.local/bin
     export PYTHONPATH=${PYTHONPATH+$PYTHONPATH:}$HOME/Scripts/Python:$HOME/Scripts/Python/lib
     export MYPYPATH=$PYTHONPATH
 
-    # Aliases
     alias tclear='clear; task list'
     alias mypy='mypy_wrapper'
 
-    # Functions
     notify() {
-        "$@" && notify-send -t 0 "Command Completed: $*" || \
-                notify-send -t 0 "Command Failed: $*"
+        "$@" && notify-send -t 0 "Command Completed: $*" \
+                || notify-send -t 0 "Command Failed: $*"
     }
+
+    eval $(ssh-agent) &>/dev/null;
+    ssh-add ~/.ssh/github &>/dev/null;
 }
 
 desktop() {
