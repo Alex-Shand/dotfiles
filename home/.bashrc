@@ -26,8 +26,9 @@ common() {
 
 # Common configuration for machines based on configuration.nix
 nix() {
-    # Stops the prompt being reset inside an FHS env nix-shell
-    if [[ "$PS1" != *chrootenv* ]]; then
+    if [[ "${FHS:-0}" == 1 ]]; then
+        export PS1="\e[0;36m[\u@\h:\W]\\$ \e[m"
+    else
         export PS1="[\u@\h:\W]\\$ "
     fi
 
@@ -39,6 +40,7 @@ nix() {
     alias software='remacs /etc/nixos/software.nix'
     alias prog='remacs /etc/nixos/languages.nix'
     alias config='remacs /etc/nixos/configuration.nix'
+    alias vscode='remacs /etc/nixos/vscode.nix'
     alias ns='nix-shell'
 
     sshfs() {
@@ -56,7 +58,7 @@ nix() {
 }
 
 laptop() {
-    export PATH=${PATH+$PATH:}$HOME/.local/bin
+    export PATH=${PATH+$PATH:}$HOME/.local/bin:$HOME/.cargo/bin
     export PYTHONPATH=${PYTHONPATH+$PYTHONPATH:}$HOME/Scripts/Python:$HOME/Scripts/Python/lib
     export MYPYPATH=$PYTHONPATH
 
