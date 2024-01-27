@@ -70,6 +70,12 @@ laptop() {
                 || notify-send -t 0 "Command Failed: $*"
     }
 
+    backup() (
+        eval $(ssh-agent)
+        ssh-add ~/.ssh/backup
+        ~/.local/bin/backup
+    )
+
     eval $(ssh-agent) &>/dev/null;
     ssh-add ~/.ssh/github &>/dev/null;
 }
