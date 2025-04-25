@@ -32,6 +32,10 @@ nix() {
         export PS1="[\u@\h:\W]\\$ "
     fi
 
+    if [ $(basename "/"$(ps -f -p $(cat /proc/$(echo $$)/stat | cut -d \  -f 4) | tail -1 | sed 's/^.* //')) == "yakuake" ]; then
+        cd
+    fi
+
     ## Nix Aliases ##
     # Rebuild OS after changes to configuration.nix
     alias rebuild='sudo nixos-rebuild switch'
@@ -108,6 +112,6 @@ unset -f laptop
 unset -f desktop
 
 # Load testing config
-if [[ -f ".bashrc.testing" ]]; then
-    source .bashrc.testing
+if [[ -f "$HOME/.bashrc.testing" ]]; then
+    source "$HOME/.bashrc.testing"
 fi
