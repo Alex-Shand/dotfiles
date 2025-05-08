@@ -65,6 +65,8 @@ laptop() {
     export PATH=${PATH+$PATH:}$HOME/.local/bin:$HOME/.cargo/bin
     export PYTHONPATH=${PYTHONPATH+$PYTHONPATH:}$HOME/Scripts/Python:$HOME/Scripts/Python/lib
     export MYPYPATH=$PYTHONPATH
+    export LC_CTYPE=en_US.UTF-8
+    export LC_ALL=en_US.UTF-8
 
     alias tclear='clear; task list'
     alias mypy='mypy_wrapper'
